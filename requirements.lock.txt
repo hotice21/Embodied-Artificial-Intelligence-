@@ -1,0 +1,60 @@
+﻿aioredis==1.3.1
+async-timeout==4.0.2
+autobahn==21.2.1
+certifi==2021.5.30
+cffi==1.15.1
+cryptography==40.0.2
+cycler==0.11.0
+Cython==0.26.1
+decorator==4.4.2
+editdistance @ file:///D:/bld/editdistance_1610127395467/work
+future @ file:///D:/bld/future_1610147365175/work
+greenlet @ file:///D:/bld/greenlet_1632928381837/work
+h5py==2.10.0
+hiredis==2.0.0
+humanfriendly @ file:///D:/bld/humanfriendly_1634817349389/work
+hyperlink==21.0.0
+idna==3.10
+imageio==2.15.0
+joblib==1.1.1
+kiwisolver @ file:///D:/bld/kiwisolver_1610099971815/work
+MarkupSafe @ file:///D:/bld/markupsafe_1610127633636/work
+matplotlib==3.3.4
+menuinst @ file:///D:/bld/menuinst_1631689014180/work
+MouseInfo==0.1.3
+mss==6.1.0
+multidict @ file:///D:/bld/multidict_1633329976842/work
+networkx==2.5.1
+numpy==1.19.5
+offshoot==0.1.6
+Pillow==8.4.0
+PyAutoGUI==0.9.52
+pycparser==2.21
+PyGetWindow==0.0.9
+PyMsgBox==1.0.9
+pyparsing==3.0.7
+pyperclip==1.8.2
+PyQt5_sip==4.19.18
+pyreadline @ file:///D:/bld/pyreadline_1632466759315/work
+PyRect==0.2.0
+PyScreeze==0.1.28
+python-dateutil==2.9.0.post0
+pytweening==1.0.4
+PyWavelets==1.1.1
+pywin32==301
+PyYAML==5.4.1
+redis==3.5.3
+scikit-image==0.17.2
+scikit-learn==0.24.2
+scipy==1.5.4
+SerpentAI==2018.1.2
+sgp4 @ file:///D:/bld/sgp4_1625142081373/work
+six==1.17.0
+sneakysnek==0.1.1
+threadpoolctl==3.1.0
+tifffile==2020.9.3
+tornado @ file:///D:/bld/tornado_1610094881553/work
+txaio==22.2.1
+typing_extensions==4.1.1
+wrapt @ file:///D:/bld/wrapt_1633440682787/work
+XStatic-jQuery @ file:///D:/bld/xstatic-jquery_1605203200420/work

@@ -1,0 +1,12 @@
+.envs/
+.mamba/
+.tools/
+.wheelhouse/
+.team_repo/
+The Binding of Isaac Rebirth Repentance/
+backups/
+artifacts/frames/
+artifacts/videos/
+artifacts/logs/
+*.pyc
+__pycache__/
