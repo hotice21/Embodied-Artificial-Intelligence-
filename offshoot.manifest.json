@@ -1,5 +1,36 @@
 {
     "plugins": {
-
+        "SerpentIsaacGamePlugin": {
+            "name": "SerpentIsaacGamePlugin",
+            "version": "0.1.0",
+            "files": [
+                {
+                    "path": "serpent_isaac_game.py",
+                    "pluggable": "Game"
+                }
+            ],
+            "plugins": [],
+            "libraries": [],
+            "config": {
+                "fps": 10
+            }
+        },
+        "SerpentIsaacSystemTestGameAgentPlugin": {
+            "name": "SerpentIsaacSystemTestGameAgentPlugin",
+            "version": "0.1.0",
+            "files": [
+                {
+                    "path": "serpent_isaac_system_test_game_agent.py",
+                    "pluggable": "GameAgent"
+                }
+            ],
+            "plugins": [
+                "SerpentIsaacGamePlugin"
+            ],
+            "libraries": [],
+            "config": {
+                "frame_handler": "PLAY"
+            }
+        }
     }
 }

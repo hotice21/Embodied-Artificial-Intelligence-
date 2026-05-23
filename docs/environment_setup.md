@@ -13,9 +13,9 @@
 在项目根目录运行单条命令：
 
 ```powershell
-.\tools\run_in_env.ps1 python --version
-.\tools\run_in_env.ps1 serpent.exe --help
-.\tools\serpent.ps1 modules
+.\tools\run_in_env.cmd python --version
+.\tools\run_in_env.cmd serpent.exe --help
+.\tools\serpent.cmd modules
 ```
 
 如果想激活环境后连续运行命令，在 PowerShell 中点号加载脚本：
@@ -39,9 +39,9 @@ serpent.exe --help
 已通过：
 
 ```powershell
-.\tools\run_in_env.ps1 python -m pip check
-.\tools\run_in_env.ps1 serpent.exe --help
-.\tools\serpent.ps1 modules
+.\tools\run_in_env.cmd python -m pip check
+.\tools\run_in_env.cmd serpent.exe --help
+.\tools\serpent.cmd modules
 ```
 
 关键模块已验证可导入：`serpent`、`offshoot`、`numpy`、`scipy`、`skimage`、`sklearn`、`h5py`、`redis`、`aioredis`、`mss`、`pyautogui`、`win32gui`、`sneakysnek`、`autobahn`、`editdistance`。
@@ -51,7 +51,7 @@ serpent.exe --help
 不要直接运行全局 `pip install`。如果要装包，优先使用：
 
 ```powershell
-.\tools\run_in_env.ps1 python -m pip install <package>
+.\tools\run_in_env.cmd python -m pip install <package>
 ```
 
 当前 Python 3.6 的 `pip` 访问 PyPI 会遇到 TLS/SSL 问题，因此本环境使用 `.wheelhouse` 离线包完成安装。后续如果继续安装旧包，建议先用主机 Python 下载 wheel 到 `.wheelhouse`，再用虚拟环境离线安装。
