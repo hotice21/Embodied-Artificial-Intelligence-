@@ -75,9 +75,21 @@ size=(640, 360) mode=RGB mean=176.71 extrema=(0, 243)
   - `plugins\SerpentIsaacGamePlugin`
   - `plugins\SerpentIsaacSystemTestGameAgentPlugin`
 
-## 当前阻塞
+## Redis 测试
 
-Redis 服务端没有运行，也没有安装在 PATH 中：
+Redis 服务端已安装到项目目录：
+
+```text
+.tools\redis
+```
+
+启动命令：
+
+```powershell
+.\tools\start_redis.cmd
+```
+
+验证命令：
 
 ```powershell
 .\tools\run_in_env.cmd python tools\redis_ping.py
@@ -86,21 +98,29 @@ Redis 服务端没有运行，也没有安装在 PATH 中：
 结果：
 
 ```text
-ConnectionRefusedError / Error 10061 connecting to 127.0.0.1:6379
+True
 ```
 
-SerpentAI 的完整 `play`、`record`、`grab_frames` 流程依赖 Redis 队列，因此下一步必须安装并启动 Redis。
+SerpentAI FrameGrabber 队列测试：
+
+```powershell
+.\tools\run_in_env.cmd python tools\serpent_frame_queue_test.py
+```
+
+结果：
+
+```text
+redis_key=SERPENT:FRAMES
+frame_shape=(360, 640, 3)
+frame_dtype=uint8
+frame_mean=139.62
+```
+
+说明 SerpentAI 能从游戏窗口抓帧并写入 Redis 队列。
 
 ## 下一步
 
-1. 安装 Redis 服务端，确保 `127.0.0.1:6379` 可连接。
-2. 再跑：
-
-```powershell
-.\tools\run_in_env.cmd python tools\redis_ping.py
-```
-
-3. Redis 通过后，继续测试：
+1. 继续测试：
 
 ```powershell
 .\tools\serpent.cmd play Isaac IsaacSystemTest
@@ -108,9 +128,9 @@ SerpentAI 的完整 `play`、`record`、`grab_frames` 流程依赖 Redis 队列�
 
 或按插件实际类名运行 SerpentAI 的 `play` 流程。
 
-4. 和算法同学对接动作空间：
+2. 和算法同学对接动作空间：
    - 移动：`MOVE_UP`、`MOVE_DOWN`、`MOVE_LEFT`、`MOVE_RIGHT`
    - 射击：`SHOOT_UP`、`SHOOT_DOWN`、`SHOOT_LEFT`、`SHOOT_RIGHT`
    - 功能：`BOMB`、`ACTIVE_ITEM`、`DROP`、`WAIT`
 
-5. 建立实验数据库，记录 episode、step、action、reward、frame_path、done。
+3. 建立实验数据库，记录 episode、step、action、reward、frame_path、done。

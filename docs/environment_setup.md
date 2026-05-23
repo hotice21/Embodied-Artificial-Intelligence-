@@ -29,6 +29,7 @@ serpent.exe --help
 ## 已完成内容
 
 - 创建了项目内隔离虚拟环境 `.envs\isaac-serpent`。
+- 创建了项目内便携 Redis 服务端 `.tools\redis`。
 - 安装了 `SerpentAI==2018.1.2`、`offshoot`、`Cython==0.26.1`。
 - 安装了 Windows 基础依赖：`numpy`、`scipy`、`scikit-image`、`scikit-learn`、`h5py`、`redis`、`aioredis`、`mss`、`PyAutoGUI`、`pywin32`、`sneakysnek`、`autobahn`、`editdistance`。
 - 初始化了 SerpentAI 配置：`config\`、`offshoot.yml`、`offshoot.manifest.json`、`requirements.txt`。
@@ -45,6 +46,14 @@ serpent.exe --help
 ```
 
 关键模块已验证可导入：`serpent`、`offshoot`、`numpy`、`scipy`、`skimage`、`sklearn`、`h5py`、`redis`、`aioredis`、`mss`、`pyautogui`、`win32gui`、`sneakysnek`、`autobahn`、`editdistance`。
+
+Redis 启动与验证：
+
+```powershell
+.\tools\install_redis.cmd
+.\tools\start_redis.cmd
+.\tools\run_in_env.cmd python tools\redis_ping.py
+```
 
 ## 注意事项
 
