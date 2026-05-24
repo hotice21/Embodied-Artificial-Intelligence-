@@ -1,4 +1,5 @@
 import os
+import time
 
 from serpent.game import Game
 from serpent.input_controller import InputControllers
@@ -37,6 +38,44 @@ class SerpentIsaacGame(Game, metaclass=Singleton):
         self.game_root = game_root
         self.api_class = IsaacAPI
         self.api_instance = None
+
+    def after_launch(self):
+        self.is_launched = True
+
+        time.sleep(5)
+
+        self.window_id = self.window_controller.locate_window(self.window_name)
+        if not self.window_id:
+            raise RuntimeError("Could not locate Isaac window: %s" % self.window_name)
+
+        self._restore_window()
+        self.window_controller.move_window(self.window_id, 0, 0)
+        self.window_controller.focus_window(self.window_id)
+        self.window_geometry = self.extract_window_geometry()
+
+        if self.window_geometry["width"] <= 0 or self.window_geometry["height"] <= 0:
+            self._restore_window()
+            time.sleep(1)
+            self.window_controller.move_window(self.window_id, 0, 0)
+            self.window_controller.focus_window(self.window_id)
+            self.window_geometry = self.extract_window_geometry()
+
+        if self.window_geometry["width"] <= 0 or self.window_geometry["height"] <= 0:
+            raise RuntimeError("Isaac window geometry is invalid: %s" % self.window_geometry)
+
+        print(self.window_geometry)
+
+    def _restore_window(self):
+        try:
+            import win32con
+            import win32gui
+
+            if win32gui.IsIconic(self.window_id):
+                win32gui.ShowWindow(self.window_id, win32con.SW_RESTORE)
+            else:
+                win32gui.ShowWindow(self.window_id, win32con.SW_SHOWNORMAL)
+        except Exception:
+            pass
 
     @property
     def screen_regions(self):

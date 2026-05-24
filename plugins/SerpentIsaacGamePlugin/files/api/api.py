@@ -1,4 +1,5 @@
 from serpent.game_api import GameAPI
+from serpent.input_controller import InputController
 from sneakysnek.keyboard_keys import KeyboardKey
 
 
@@ -21,6 +22,7 @@ class IsaacAPI(GameAPI):
 
     def __init__(self, game=None):
         super().__init__(game=game)
+        self.input_controller = InputController(game=game, backend=game.input_controller)
 
     @classmethod
     def available_actions(cls):
@@ -36,4 +38,4 @@ class IsaacAPI(GameAPI):
         keys = self.keys_for_action(action)
         if not keys:
             return
-        self.input_controller.tap_keys(keys, duration=duration)
+        self.input_controller.tap_keys(keys, duration=duration, force=True)

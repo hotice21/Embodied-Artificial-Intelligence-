@@ -8,5 +8,8 @@ backups/
 artifacts/frames/
 artifacts/videos/
 artifacts/logs/
+data/*.db
+data/*.sqlite
+data/*.sqlite3
 *.pyc
 __pycache__/
