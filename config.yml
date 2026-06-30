@@ -1,0 +1,404 @@
+# ============================================================
+# SerpentAI Unsupervised Training Configuration
+# 配置文件说明：
+# - 所有参数都有默认值，不需要的可以保持默认
+# - 路径使用相对路径，相对于项目根目录
+# - 数值参数根据游戏实际情况调整
+# ============================================================
+
+# ============================================================
+# 代理配置（Agent Configuration）
+# ============================================================
+agent:
+  # 动作空间定义（Action Space）
+  action_space:
+    # 交互动作（Interaction）
+    interaction:
+    - Q           # 按Q键（通常用于交互/使用道具）
+    
+    # 移动动作（Movement）
+    movement:
+    - W           # 向上移动
+    - A           # 向左移动
+    - S           # 向下移动
+    - D           # 向右移动
+    - WA          # 斜向左上
+    - WD          # 斜向右上
+    - SA          # 斜向左下
+    - SD          # 斜向右下
+    
+    # 射击动作（Shooting）- 相对于玩家方向
+    shooting:
+    - UP          # 向上射击
+    - DOWN        # 向下射击
+    - LEFT        # 向左射击
+    - RIGHT       # 向右射击
+    
+    # 动作类型：multi（多动作同时执行）
+    type: multi
+
+  # 简化动作空间配置（用于初学者模式）
+  simplified_action_space:
+    # 移除对角线移动，只保留4个基本方向
+    movement:
+    - W           # 向上移动
+    - A           # 向左移动
+    - S           # 向下移动
+    - D           # 向右移动
+    
+    # 射击方向保持不变
+    shooting:
+    - UP          # 向上射击
+    - DOWN        # 向下射击
+    - LEFT        # 向左射击
+    - RIGHT       # 向右射击
+    
+    # 移除交互动作（简化学习）
+    interaction: []
+    
+    # 动作类型：multi（多动作同时执行）
+    type: multi
+
+  # 按键映射（Key Mapping）- 将动作名称映射到实际按键
+  key_mapping:
+    interaction:
+      Q: q               # Q键
+      NONE: []            # 无操作
+      SPACE: space        # 空格键
+    movement:
+      A: a                # 左
+      D: d                # 右
+      NONE: []            # 无操作
+      S: s                # 下
+      SA:                 # 左下
+      - s
+      - a
+      SD:                 # 右下
+      - s
+      - d
+      W: w                # 上
+      WA:                 # 左上
+      - w
+      - a
+      WD:                 # 右上
+      - w
+      - d
+    shooting:
+      DOWN: k             # 向下射击（K键）
+      LEFT: j             # 向左射击（J键）
+      NONE: []            # 不射击
+      RIGHT: l            # 向右射击（L键）
+      UP: i               # 向上射击（I键）
+
+  # 动作间隔时间（秒）- 控制AI决策频率
+  step_interval: 0.05     # 80ms执行一次动作
+
+
+# ============================================================
+# 屏幕配置（Screen Configuration）
+# ============================================================
+screen:
+  # 战斗视觉检测配置（Combat Vision Detection）
+  combat:
+    # 分析图像缩放比例（1.0为原始大小，<1.0提高性能）
+    analysis_scale: 1.0
+    
+    # 击中敌人子弹奖励
+    bullet_hit_reward: 18
+    
+    # 捕获显示器编号（0为主显示器，1为副显示器）
+    capture_monitor: 1
+    
+    # 捕获区域 [x, y, width, height] - 只捕获游戏窗口区域
+    capture_region:
+    - 0                   # 起始X坐标
+    - 0                   # 起始Y坐标
+    - 1000                # 宽度
+    - 700                 # 高度
+    
+    # 接触冷却帧数（防止同一接触被多次判定）
+    contact_cooldown_frames: 4
+    
+    # 接触判定容差（像素）- 允许多少像素重叠算作接触
+    contact_margin: 4
+    
+    # 伤害下降阈值（用于判断玩家是否受伤）
+    damage_drop_threshold: 5.0
+    
+    # 受到伤害惩罚值
+    damage_penalty: -24
+    
+    # 闪避成功奖励
+    dodge_reward: 15
+    
+    # 闪避判定窗口（帧数）
+    dodge_window: 3
+    
+    # ============ 敌人检测参数（关键！）============
+    # 敌人检测消失帧数（超过此帧数未检测到则认为敌人离开）
+    enemy_decay_frames: 4
+    
+    # 敌人运动检测阈值（像素/帧）- 低于此值不认为是敌人
+    enemy_motion_threshold: 18.0
+    
+    # 是否使用运动候选（通过运动检测辅助敌人识别）
+    use_enemy_motion_candidates: true
+    
+    # 敌人运动区域最小面积（像素）- 过滤太小的运动物体
+    enemy_motion_min_area: 80
+    
+    # 敌人运动区域最大面积（像素）- 过滤太大的运动物体（如背景）
+    enemy_motion_max_area: 18000
+    
+    # 最大检测敌人数量
+    enemy_motion_max_boxes: 10
+    
+    # 敌人运动框合并IOU阈值（重叠超过此值合并）
+    enemy_motion_merge_iou: 0.35
+    
+    # 敌人存在确认帧数（连续检测到多少次才算有效敌人）
+    enemy_presence_frames: 2
+    
+    # 敌人检测区域 [x, y, width, height] - 只在指定区域内检测敌人
+    enemy_regions:
+    - - 0
+      - 396
+      - 2490
+      - 869
+    
+    # 敌人子弹标签名
+    enemy_bullet_label: bullets_enemy
+    
+    # 敌人子弹模板匹配阈值（0-1，越低越宽松）
+    # 建议：如果漏识别太多，降低此值；如果误识别太多，提高此值
+    enemy_bullet_template_threshold: 0.7
+    
+    # 敌人模板匹配阈值（0-1）
+    # 当前问题：墙和地面被识别为敌人 → 提高此值
+    # 当前问题：真正敌人识别缺失 → 降低此值
+    # 折衷方案：降低阈值，同时加强背景抑制
+    enemy_template_threshold: 0.68        # 从0.72降低到0.68，减少漏识别
+    
+    # 敌人模板列表（自动加载）
+    enemy_templates: []
+    
+    # 敌人可见惩罚（当敌人在视野内时的持续惩罚，鼓励消灭敌人）
+    enemy_visible_penalty: 0
+    
+    # 生成标签CSV文件路径
+    generated_labels_csv: labels_generated.csv
+    
+    # 是否要求敌人可见才能判定击中
+    hit_requires_enemy_visible: true
+    
+    # 击中敌人奖励
+    hit_reward: 10
+    
+    # 击中分数阈值
+    hit_score_threshold: 1
+    
+    # 标签CSV文件路径
+    labels_csv: labels.csv
+    
+    # 标签库目录
+    label_bank_dir: label_bank
+    
+    # 标签属性配置文件
+    label_properties_file: label_properties.json
+    
+    # 地面标签名（用于抑制其他识别）
+    ground_label: ground
+    
+    # 玩家子弹标签名
+    player_bullet_label: bullets_player
+    
+    # 玩家子弹模板匹配阈值
+    player_bullet_template_threshold: 0.7
+    
+    # 玩家血量区域（用于读取血量）
+    player_health_region: null
+    
+    # 玩家受伤惩罚
+    player_hit_penalty: -8
+    
+    # 玩家受伤正标签（用于模板匹配）
+    player_hit_positive_tags:
+    - hurt
+    - hit
+    - injured
+    - damage
+    - 受伤
+    
+    # 玩家受伤模板资源目录
+    player_hit_resource_dir: resources/player_hit
+    
+    # 玩家受伤模板匹配阈值
+    player_hit_template_threshold: 0.76
+    
+    # 玩家受伤模板列表（自动加载）
+    player_hit_templates: []
+    
+    # 玩家标签名
+    player_label: player
+    
+    # 玩家模板匹配阈值
+    player_template_threshold: 0.76
+    
+    # 玩家检测区域 [x, y, width, height] - 限制玩家检测范围，提高准确性
+    player_region:
+    - 1130
+    - 478
+    - 1423
+    - 651
+    
+    # 资源根目录
+    resource_root: resources
+    
+    # 是否显示视觉检测窗口
+    display_enabled: true
+    
+    # 显示窗口缩放比例
+    display_scale: 1.0
+    
+    # 显示窗口位置（top_right/top_left/bottom_right/bottom_left）
+    display_anchor: top_right
+    
+    # 显示窗口名称
+    display_window_name: SerpentAI Vision
+    
+    # 显示模式：
+    # - full: 显示完整分析图像
+    # - boxes_only: 只显示检测框（提高帧率）
+    # - minimal: 最小化显示
+    display_mode: boxes_only
+    
+    # 显示等待时间（毫秒）- 越小帧率越高
+    display_wait_ms: 0.5
+    
+    # 视觉检测帧率（FPS）- 限制检测频率，平衡性能
+    vision_fps: 30
+    
+    # 模板匹配缩放比例列表（多尺度匹配）
+    template_scales:
+    - 1.0                 # 原始大小
+    - 0.9                 # 缩小10%
+    - 1.1                 # 放大10%
+    
+    # 时间惩罚（每帧基础惩罚，鼓励快速完成任务）
+    time_penalty: -1
+    
+    # ============ 增强玩家检测配置 ============
+    use_enhanced_player: true            # 是否使用增强玩家检测
+    player_color_lower: [0, 150, 150]    # 玩家颜色范围下限（HSV）
+    player_color_upper: [30, 255, 255]   # 玩家颜色范围上限（HSV）
+    motion_threshold: 10                  # 运动检测阈值
+    track_history_length: 5               # 轨迹历史长度
+
+  # 是否自动点击焦点（用于游戏窗口）
+  focus_click: false
+  
+  # 焦点点击位置 [x, y]
+  focus_point:
+  - 520
+  - 96
+  
+  # 焦点等待时间（秒）
+  focus_wait: 1.5
+  
+  # 分数区域 [x, y, width, height]
+  score_region:
+  - 490
+  - 84
+  - 60
+  - 24
+  
+  # 是否锁定分数区域
+  score_region_locked: true
+
+
+# ============================================================
+# 训练器配置（Trainer Configuration）
+# ============================================================
+trainer:
+  # 每多少步记录一次日志
+  log_every: 100
+  
+  # 最大训练步数
+  max_steps: 100000
+  
+  # 训练轮数（Episode）
+  episodes: 500
+  
+  # 每轮最大步数
+  episode_length: 500
+  
+  # 每多少步采样一次
+  sample_every: 3
+  
+  # 时间惩罚（每步基础惩罚）
+  time_penalty: -1
+
+
+# ============================================================
+# 强化学习配置（Reinforcement Learning Configuration）
+# ============================================================
+rl:
+  # 训练器类型（ppo/proximal_policy_optimization）
+  trainer_type: ppo
+  
+  # 状态维度（输入特征数量，61维：玩家4+敌人15+敌人数量1+敌人距离特征3+敌人预测特征11+敌人子弹15+子弹数量1+危险方向8+玩家子弹1+战斗状态2）
+  state_dim: 61
+  
+  # 动作维度（输出动作数量）
+  action_dim: 9
+  
+  # 学习率
+  lr: 0.0003
+  
+  # 折扣因子（未来奖励权重）
+  gamma: 0.99
+  
+  # PPO裁剪比例
+  clip_ratio: 0.2
+  
+  # 值函数损失系数
+  value_coef: 0.5
+  
+  # 熵系数（鼓励探索）
+  entropy_coef: 0.01
+  
+  # 批次大小
+  batch_size: 128
+  
+  # 更新频率（每多少步更新一次网络）
+  update_freq: 10
+  
+  # 经验缓冲区大小
+  buffer_size: 50000
+  
+  # 距离奖励系数（鼓励与敌人保持距离）
+  distance_reward_factor: 0.5
+  
+  # 保持距离奖励（保持在安全距离外的奖励）
+  stay_away_reward: 5.0
+  
+  # 敌人过近惩罚
+  enemy_proximity_penalty: -10
+  
+  # 安全距离（像素）- 超过此距离给予奖励
+  safe_distance: 120
+  
+  # 危险距离（像素）- 小于此距离给予惩罚
+  danger_distance: 60
+  
+  # 模型保存路径
+  save_path: ./models
+  
+  # 时间惩罚
+  time_penalty: -1
+  
+  # 击中奖励
+  hit_reward: 20
+  
+  # 受伤惩罚
+  hurt_penalty: -15
